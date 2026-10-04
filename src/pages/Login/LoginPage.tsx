@@ -26,7 +26,6 @@ export const LoginPage = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState(false);
 
   return (
     <Box
@@ -64,25 +63,32 @@ export const LoginPage = () => {
     >
       <AnimatedBackground />
 
+      {/* Regresar */}
       <IconButton
         onClick={() => navigate('/')}
         aria-label="Regresar"
         sx={{
           position: 'absolute',
-          top: {
-            xs: 16,
-            sm: 24,
-          },
+          top: 'max(16px, env(safe-area-inset-top))',
           left: {
             xs: 16,
             sm: 24,
           },
           zIndex: 3,
+          width: {
+            xs: 48,
+            sm: 52,
+          },
+          height: {
+            xs: 48,
+            sm: 52,
+          },
           color: '#F5F5F7',
           border: `1px solid ${alpha('#F5F5F7', 0.12)}`,
           backgroundColor: alpha('#FFFFFF', 0.025),
           backdropFilter: 'blur(18px)',
           WebkitBackdropFilter: 'blur(18px)',
+
           '&:hover': {
             borderColor: alpha('#64D2FF', 0.4),
             backgroundColor: alpha('#64D2FF', 0.05),
@@ -92,6 +98,7 @@ export const LoginPage = () => {
         <ArrowBack />
       </IconButton>
 
+      {/* Contenido */}
       <Box
         component="main"
         sx={{
@@ -100,12 +107,34 @@ export const LoginPage = () => {
           width: '100%',
           height: '100%',
           minWidth: 0,
+
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'center',
-          overflow: 'hidden',
+
+          alignItems: {
+            xs: 'flex-start',
+            sm: 'center',
+          },
+
+          overflowY: {
+            xs: 'auto',
+            sm: 'hidden',
+          },
+
+          overflowX: 'hidden',
+
           px: {
-            xs: 2,
+            xs: 1.5,
+            sm: 3,
+          },
+
+          pt: {
+            xs: 'clamp(96px, 16vh, 128px)',
+            sm: 3,
+          },
+
+          pb: {
+            xs: 3,
             sm: 3,
           },
         }}
@@ -116,20 +145,31 @@ export const LoginPage = () => {
             width: '100%',
             maxWidth: 440,
             minWidth: 0,
+
             p: {
-              xs: 2.5,
+              xs: 2,
               sm: 4,
             },
-            borderRadius: 4,
+
+            borderRadius: {
+              xs: 3,
+              sm: 4,
+            },
+
             background:
               'linear-gradient(145deg, rgba(24,24,30,0.92), rgba(12,12,16,0.96))',
+
             border: '1px solid rgba(255,255,255,0.09)',
+
             boxShadow: `
               0 30px 80px rgba(0,0,0,0.45),
               inset 0 1px 0 rgba(255,255,255,0.04)
             `,
+
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
+
+            boxSizing: 'border-box',
           }}
         >
           {/* Logo */}
@@ -139,8 +179,9 @@ export const LoginPage = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+
               mb: {
-                xs: 2,
+                xs: 1.25,
                 sm: 3,
               },
             }}
@@ -151,15 +192,19 @@ export const LoginPage = () => {
               alt="FLOWBERCUT — Your barbershop, in flow."
               sx={{
                 display: 'block',
+
                 width: {
-                  xs: 'min(220px, 70vw)',
+                  xs: 'min(175px, 58vw)',
                   sm: 240,
                 },
+
                 maxWidth: '100%',
                 height: 'auto',
                 objectFit: 'contain',
+
                 userSelect: 'none',
                 pointerEvents: 'none',
+
                 filter: `
                   drop-shadow(
                     0 0 22px ${alpha('#0A84FF', 0.12)}
@@ -180,8 +225,9 @@ export const LoginPage = () => {
               flexDirection: 'column',
               alignItems: 'center',
               textAlign: 'center',
+
               mb: {
-                xs: 2.5,
+                xs: 2,
                 sm: 3,
               },
             }}
@@ -191,10 +237,12 @@ export const LoginPage = () => {
               sx={{
                 color: '#F5F5F7',
                 fontWeight: 700,
+
                 fontSize: {
-                  xs: '1.45rem',
+                  xs: '1.3rem',
                   sm: '1.7rem',
                 },
+
                 lineHeight: 1.1,
                 letterSpacing: '-0.04em',
                 m: 0,
@@ -207,12 +255,15 @@ export const LoginPage = () => {
               component="p"
               sx={{
                 color: alpha('#F5F5F7', 0.58),
+
                 fontSize: {
-                  xs: '0.85rem',
+                  xs: '0.82rem',
                   sm: '0.95rem',
                 },
+
                 lineHeight: 1.5,
-                mt: 0.8,
+
+                mt: 0.7,
                 mb: 0,
               }}
             >
@@ -223,16 +274,14 @@ export const LoginPage = () => {
           {/* Form */}
           <Box
             component="form"
-            onSubmit={(event) => {
-              event.preventDefault();
-              setLoginError(true);
-            }}
+            onSubmit={(event) => event.preventDefault()}
             sx={{
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
+
               gap: {
-                xs: 1.8,
+                xs: 1.5,
                 sm: 2.2,
               },
             }}
@@ -244,14 +293,15 @@ export const LoginPage = () => {
               autoComplete="email"
               placeholder="tu@correo.com"
               variant="outlined"
-              onChange={() => setLoginError(false)}
               sx={{
                 '& .MuiInputLabel-root': {
                   color: alpha('#F5F5F7', 0.55),
                 },
+
                 '& .MuiInputLabel-root.Mui-focused': {
                   color: '#64D2FF',
                 },
+
                 '& .MuiOutlinedInput-root': {
                   color: '#F5F5F7',
                   backgroundColor: alpha('#FFFFFF', 0.035),
@@ -278,14 +328,15 @@ export const LoginPage = () => {
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               variant="outlined"
-              onChange={() => setLoginError(false)}
               sx={{
                 '& .MuiInputLabel-root': {
                   color: alpha('#F5F5F7', 0.55),
                 },
+
                 '& .MuiInputLabel-root.Mui-focused': {
                   color: '#64D2FF',
                 },
+
                 '& .MuiOutlinedInput-root': {
                   color: '#F5F5F7',
                   backgroundColor: alpha('#FFFFFF', 0.035),
@@ -321,6 +372,7 @@ export const LoginPage = () => {
                         }
                         sx={{
                           color: alpha('#F5F5F7', 0.45),
+
                           '&:hover': {
                             color: '#64D2FF',
                           },
@@ -343,8 +395,9 @@ export const LoginPage = () => {
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
+
                 mt: {
-                  xs: 0.5,
+                  xs: 0,
                   sm: 1,
                 },
               }}
@@ -356,35 +409,11 @@ export const LoginPage = () => {
                 Ingresar
               </GradientButton>
             </Box>
-
-            {loginError && (
-              <Box
-                role="alert"
-                sx={{
-                  mt: 0.5,
-                  px: 2,
-                  py: 1.5,
-                  borderRadius: 2.5,
-                  border: `1px solid ${alpha('#FF375F', 0.22)}`,
-                  backgroundColor: alpha('#FF375F', 0.07),
-                  textAlign: 'center',
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: '#FF8FA3',
-                    fontSize: '0.84rem',
-                    fontWeight: 500,
-                    lineHeight: 1.45,
-                  }}
-                >
-                  No se pudo acceder por ahora.
-                </Typography>
-              </Box>
-            )}
           </Box>
         </Paper>
       </Box>
     </Box>
   );
 };
+
+export default LoginPage;
