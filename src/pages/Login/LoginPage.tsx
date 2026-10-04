@@ -557,7 +557,7 @@ export const LoginPage = () => {
                     lineHeight: 1.45,
                   }}
                 >
-                  No se pudo acceder por ahora.
+                  Datos incorrectos.
                 </Typography>
               </Box>
             )}
