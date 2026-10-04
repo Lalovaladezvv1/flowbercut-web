@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   ArrowForward,
@@ -20,10 +21,12 @@ import { GradientButton } from '../../components/atoms/GradientButton';
 import { AnimatedBackground } from '../../components/organisms/AnimatedBackground';
 
 export const LandingPage = () => {
+  const navigate = useNavigate();
+
   const [showComingSoon, setShowComingSoon] = useState(false);
 
   const handleClientLogin = () => {
-    setShowComingSoon(true);
+    navigate('/login');
   };
 
   const handleJoin = () => {
