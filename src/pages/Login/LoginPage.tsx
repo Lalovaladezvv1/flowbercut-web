@@ -21,16 +21,48 @@ import { useNavigate } from 'react-router-dom';
 
 import { GradientButton } from '../../components/atoms/GradientButton';
 import { AnimatedBackground } from '../../components/organisms/AnimatedBackground';
+import { login } from '../../services/auth';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = () => {
     if (loginError) {
       setLoginError(false);
+    }
+  };
+
+
+  const handleLogin = async () => {
+    if (!email.trim() || !password) {
+      setLoginError(true);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setLoginError(false);
+
+      const response = await login({
+        email: email.trim(),
+        password,
+      });
+
+      console.log('Login exitoso:', response);
+
+      navigate('/');
+
+    } catch (error) {
+      console.error('Error de login:', error);
+      setLoginError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -316,7 +348,7 @@ export const LoginPage = () => {
             component="form"
             onSubmit={(event) => {
               event.preventDefault();
-              setLoginError(true);
+              void handleLogin();
             }}
             sx={{
               width: '100%',
@@ -338,7 +370,11 @@ export const LoginPage = () => {
               autoComplete="email"
               placeholder="tu@correo.com"
               variant="outlined"
-              onChange={handleInputChange}
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                handleInputChange();
+              }}
               sx={{
                 '& .MuiInputLabel-root': {
                   color: alpha('#F5F5F7', 0.55),
@@ -382,7 +418,11 @@ export const LoginPage = () => {
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               variant="outlined"
-              onChange={handleInputChange}
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                handleInputChange();
+              }}
               sx={{
                 '& .MuiInputLabel-root': {
                   color: alpha('#F5F5F7', 0.55),
@@ -468,9 +508,10 @@ export const LoginPage = () => {
             >
               <GradientButton
                 type="submit"
+                disabled={isLoading}
                 startIcon={<LockOutlined />}
               >
-                Ingresar
+                {isLoading ? 'Ingresando...' : 'Ingresar'}
               </GradientButton>
             </Box>
 
