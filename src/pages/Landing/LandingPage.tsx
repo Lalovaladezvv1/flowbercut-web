@@ -12,7 +12,6 @@ import {
   Container,
   Dialog,
   DialogContent,
-  Stack,
   Typography,
   alpha,
 } from '@mui/material';
@@ -153,15 +152,16 @@ export const LandingPage = () => {
             alignItems: 'center',
           }}
         >
-          <Stack
-            alignItems="center"
-            justifyContent="center"
-            spacing={0}
+          <Box
             sx={{
               width: '100%',
               maxWidth: 760,
               minWidth: 0,
               mx: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
               textAlign: 'center',
               mt: {
                 xs: 1,
@@ -347,7 +347,7 @@ export const LandingPage = () => {
                 Quiero unirme
               </GradientButton>
             </Box>
-          </Stack>
+          </Box>
         </Box>
       </Container>
 
@@ -509,7 +509,8 @@ export const LandingPage = () => {
               sx={{
                 fontSize: 27,
                 color: '#64D2FF',
-                filter: 'drop-shadow(0 0 8px rgba(100, 210, 255, 0.45))',
+                filter:
+                  'drop-shadow(0 0 8px rgba(100, 210, 255, 0.45))',
               }}
             />
           </Box>
@@ -559,13 +560,10 @@ export const LandingPage = () => {
               mt: 3.5,
               minHeight: 44,
               px: 3.5,
-
               borderRadius: 999,
-
               textTransform: 'none',
               fontSize: '0.82rem',
               fontWeight: 600,
-
               color: '#FFFFFF',
 
               background:
