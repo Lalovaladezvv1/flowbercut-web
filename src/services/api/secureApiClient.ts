@@ -4,7 +4,14 @@ import {
   generateRequestId,
   type PayloadEnvelope,
 } from '../security/payloadEncryption';
-import { getSecuritySession } from '../security/securitySession';
+
+import {
+  getSecuritySession,
+} from '../security/securitySession';
+
+import {
+  AUTH_SESSION_STORAGE_KEY,
+} from '../../features/auth/auth.slice';
 
 const API_URL = 'http://localhost:5237';
 
@@ -14,15 +21,68 @@ interface SecureRequestOptions {
   headers?: Record<string, string>;
 }
 
+interface StoredAuthSession {
+  accessToken: string;
+  expiresAt: string;
+}
+
+const getAccessToken = (): string | null => {
+  try {
+    const storedSession =
+      sessionStorage.getItem(
+        AUTH_SESSION_STORAGE_KEY,
+      );
+
+    if (!storedSession) {
+      return null;
+    }
+
+    const session =
+      JSON.parse(
+        storedSession,
+      ) as StoredAuthSession;
+
+    if (
+      !session.accessToken ||
+      !session.expiresAt
+    ) {
+      return null;
+    }
+
+    const expiresAt = new Date(
+      session.expiresAt,
+    ).getTime();
+
+    if (
+      Number.isNaN(expiresAt) ||
+      expiresAt <= Date.now()
+    ) {
+      sessionStorage.removeItem(
+        AUTH_SESSION_STORAGE_KEY,
+      );
+
+      return null;
+    }
+
+    return session.accessToken;
+  } catch {
+    return null;
+  }
+};
+
 export async function secureApiRequest<TResponse>(
   path: string,
   options: SecureRequestOptions = {},
 ): Promise<TResponse> {
-  const method = (options.method ?? 'GET').toUpperCase();
+  const method = (
+    options.method ?? 'GET'
+  ).toUpperCase();
 
-  const securitySession = await getSecuritySession();
+  const securitySession =
+    await getSecuritySession();
 
-  const requestId = generateRequestId();
+  const requestId =
+    generateRequestId();
 
   const envelope = await encryptPayload(
     options.body ?? {},
@@ -34,27 +94,52 @@ export async function secureApiRequest<TResponse>(
     requestId,
   );
 
+  const accessToken =
+    getAccessToken();
+
   const response = await fetch(
     `${API_URL}${path}`,
     {
       method,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type':
+          'application/json',
+
         'X-Flow-Session-Id':
           securitySession.sessionId,
-        'X-Request-Id': requestId,
+
+        'X-Request-Id':
+          requestId,
+
+        ...(accessToken
+          ? {
+              Authorization:
+                `Bearer ${accessToken}`,
+            }
+          : {}),
+
         ...options.headers,
       },
-      body: JSON.stringify(envelope),
+
+      body: JSON.stringify(
+        envelope,
+      ),
     },
   );
 
   if (!response.ok) {
     const contentType =
-      response.headers.get('content-type') ?? '';
+      response.headers.get(
+        'content-type',
+      ) ?? '';
 
-    if (contentType.includes('application/json')) {
-      const errorBody = await response.json();
+    if (
+      contentType.includes(
+        'application/json',
+      )
+    ) {
+      const errorBody =
+        await response.json();
 
       throw new Error(
         errorBody.message ??

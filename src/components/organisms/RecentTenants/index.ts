@@ -1,0 +1,1 @@
+export { RecentTenants } from './RecentTenants';
