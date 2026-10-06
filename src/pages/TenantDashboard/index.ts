@@ -1,1 +1,1 @@
-export { TenantDashboardPage } from './TenantDashboardPage';
+export * from './TenantDashboardPage';

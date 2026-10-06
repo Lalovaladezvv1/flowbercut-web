@@ -23,6 +23,7 @@ export interface PlatformDashboardTemplateProps {
 export const PlatformDashboardTemplate = ({
   onManageTenants,
 }: PlatformDashboardTemplateProps) => {
+  
   return (
     <Box
       sx={{

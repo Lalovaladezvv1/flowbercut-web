@@ -11,6 +11,7 @@ import { TenantDashboardPage } from '../../pages/TenantDashboard';
 import { ProtectedRoute } from './guards/ProtectedRoute';
 import { PlatformRoute } from './guards/PlatformRoute';
 import { TenantRoute } from './guards/TenantRoute';
+import { TenantLayout } from '../../layouts/TenantLayout';
 
 export const AppRouter = () => {
   return (
@@ -53,11 +54,16 @@ export const AppRouter = () => {
         {/* Tenant */}
         <Route element={<TenantRoute />}>
           <Route
-            path="/tenant/dashboard"
-            element={
-              <TenantDashboardPage />
-            }
-          />
+            path="/tenant"
+            element={<TenantLayout />}
+          >
+            <Route
+              path="dashboard"
+              element={
+                <TenantDashboardPage />
+              }
+            />
+          </Route>
         </Route>
       </Route>
     </Routes>
