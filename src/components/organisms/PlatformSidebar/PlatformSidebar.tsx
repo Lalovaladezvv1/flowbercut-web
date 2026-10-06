@@ -1,5 +1,4 @@
 import {
-  BarChartRounded,
   BusinessRounded,
   ChevronLeftRounded,
   DashboardRounded,
@@ -192,8 +191,10 @@ export const PlatformSidebar = ({
                     primary={item.label}
                     slotProps={{
                       primary: {
-                        fontSize: '0.88rem',
-                        fontWeight: isActive ? 600 : 500,
+                        sx: {
+                          fontSize: '0.88rem',
+                          fontWeight: isActive ? 600 : 500,
+                        },
                       },
                     }}
                   />

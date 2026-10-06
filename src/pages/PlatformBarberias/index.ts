@@ -1,0 +1,1 @@
+export { PlatformBarberiasPage } from './PlatformBarberiasPage';

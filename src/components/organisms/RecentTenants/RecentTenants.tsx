@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router-dom';
 
 const tenants = [
   {
-    name: 'La Barbershop Arturia',
-    code: 'ARTURIA',
-    subdomain: 'arturia.flowbercut.com',
+    name: 'The Barbershop',
+    code: 'BS',
+    subdomain: 'thebarber.flowbercut.com',
     active: true,
   },
   {

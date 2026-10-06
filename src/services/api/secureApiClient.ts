@@ -84,47 +84,61 @@ export async function secureApiRequest<TResponse>(
   const requestId =
     generateRequestId();
 
-  const envelope = await encryptPayload(
-    options.body ?? {},
-    securitySession.aesKey,
-    securitySession.sessionId,
-    securitySession.keyId,
-    method,
-    path,
-    requestId,
-  );
-
   const accessToken =
     getAccessToken();
 
+  const headers: Record<string, string> = {
+    'Content-Type':
+      'application/json',
+
+    'X-Flow-Session-Id':
+      securitySession.sessionId,
+
+    'X-Request-Id':
+      requestId,
+
+    ...(accessToken
+      ? {
+          Authorization:
+            `Bearer ${accessToken}`,
+        }
+      : {}),
+
+    ...options.headers,
+  };
+
+  const requestInit: RequestInit = {
+    method,
+    headers,
+  };
+
+  /**
+   * GET y HEAD no pueden llevar body.
+   * Los demás métodos utilizan el payload
+   * cifrado de FLOWBERCUT.
+   */
+  if (
+    method !== 'GET' &&
+    method !== 'HEAD'
+  ) {
+    const envelope =
+      await encryptPayload(
+        options.body ?? {},
+        securitySession.aesKey,
+        securitySession.sessionId,
+        securitySession.keyId,
+        method,
+        path,
+        requestId,
+      );
+
+    requestInit.body =
+      JSON.stringify(envelope);
+  }
+
   const response = await fetch(
     `${API_URL}${path}`,
-    {
-      method,
-      headers: {
-        'Content-Type':
-          'application/json',
-
-        'X-Flow-Session-Id':
-          securitySession.sessionId,
-
-        'X-Request-Id':
-          requestId,
-
-        ...(accessToken
-          ? {
-              Authorization:
-                `Bearer ${accessToken}`,
-            }
-          : {}),
-
-        ...options.headers,
-      },
-
-      body: JSON.stringify(
-        envelope,
-      ),
-    },
+    requestInit,
   );
 
   if (!response.ok) {

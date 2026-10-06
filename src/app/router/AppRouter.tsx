@@ -4,6 +4,7 @@ import { PlatformLayout } from '../../layouts/PlatformLayout';
 
 import { LandingPage } from '../../pages/Landing';
 import { LoginPage } from '../../pages/Login';
+import { PlatformBarberiasPage } from '../../pages/PlatformBarberias';
 import { PlatformDashboardPage } from '../../pages/PlatformDashboard';
 import { TenantDashboardPage } from '../../pages/TenantDashboard';
 
@@ -37,6 +38,13 @@ export const AppRouter = () => {
               path="dashboard"
               element={
                 <PlatformDashboardPage />
+              }
+            />
+
+            <Route
+              path="barberias"
+              element={
+                <PlatformBarberiasPage />
               }
             />
           </Route>

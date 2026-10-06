@@ -90,7 +90,7 @@ export const PlatformDashboardTemplate = ({
               overflowWrap: 'break-word',
             }}
           >
-            Buenos días, Eduardo
+            Hola
           </Typography>
 
           <Typography
