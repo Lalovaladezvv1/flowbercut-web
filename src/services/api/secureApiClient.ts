@@ -13,7 +13,7 @@ import {
   AUTH_SESSION_STORAGE_KEY,
 } from '../../features/auth/auth.slice';
 
-const API_URL = 'http://localhost:5237';
+const API_URL = 'https://api.flowbercut.com/';
 
 interface SecureRequestOptions {
   method?: string;
