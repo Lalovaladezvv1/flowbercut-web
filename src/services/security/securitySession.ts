@@ -11,7 +11,7 @@ interface SecuritySessionResponse {
   expiresAt: string;
 }
 
-const API_URL = 'https://api.flowbercut.com/';
+const API_URL = 'https://api.flowbercut.com';
 
 let session: {
   sessionId: string;
